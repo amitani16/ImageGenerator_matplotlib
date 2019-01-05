@@ -14,14 +14,23 @@ img_list = []
 
 PATH = '/Users/ichiroamitani/Documents/Software/Python/Siamese_network-master/image/'
 
-def load_MNIST_image(data_path):
+
+def load_MNIST_image_label(data_path, nb_class = 10):
+
+    nb_class_list = list(range(nb_class))
+    e = np.eye(nb_class)
+
+    train_img_list =[]
+    train_label_list = []
+    test_img_list = []
+    test_label_list = []
 
     for i in nb_class_list:
 
         for filename in glob.glob(data_path + 'train/'  + str(i) + '/*.jpg'):
             img = Image.open(filename).convert('L')
             img = np.asarray(img)/255
-            traom_img_list.append(img)
+            train_img_list.append(img)
             train_label_list.append(e[i])
 
         for filename in glob.glob(PATH + 'test/' + str(i) + '/*.jpg'):
@@ -30,6 +39,7 @@ def load_MNIST_image(data_path):
             test_img_list.append(img)
             test_label_list.append(e[i])
 
+    return (train_img_list, train_label_list), (test_img_list, test_label_list)
 
 
 def show_effect(img_list, x, grid_shape = (3, 3)):
@@ -75,7 +85,10 @@ def generate_augmented_image(data_generator, img_src, nb_images = 9):
 
 if __name__ == '__main__':
 
-    x = img_list[0].reshape(1, IMG_H, IMG_W, 1)
+    train_data, test_data = load_MNIST_image_label(PATH)
+    img_list = train_data[0]
+
+    x = img_list[1].reshape(1, IMG_H, IMG_W, 1)
     grid_shape = (3, 3)
 
     datagen = ImageDataGenerator(rotation_range = 90)
