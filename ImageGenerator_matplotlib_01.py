@@ -45,7 +45,6 @@ for i in nb_class_list:
 print("Image Read Finished")
 
 
-
 if __name__ == '__main__':
 
     x = img_list[0].reshape(1, IMG_H, IMG_W, 1)
