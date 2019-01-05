@@ -25,6 +25,7 @@ import numpy as np
 import glob
 from PIL import Image
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 
 nb_class = 10
 nb_class_list = list(range(nb_class))
@@ -45,28 +46,53 @@ for i in nb_class_list:
 print("Image Read Finished")
 
 
+def show_effect(data_generator, x, grid_shape = (3, 3)):
+
+    g = datagen.flow(x, batch_size = 1)
+
+    (r, c) = grid_shape
+    img = []
+    for i in range(r * c):
+        img.append(g.next())
+
+    fig, axes = plt.subplots(r, c)
+    k = 0
+    for i in range(c):
+        for j in range(r):
+            axes[i, j].matshow(img[k].reshape(IMG_W, IMG_H), cmap = 'gray')
+            axes[i, j].get_yaxis().set_visible(False)
+            axes[i, j].get_xaxis().set_visible(False)
+            k = k + 1
+
+    plt.show()
+
+
+def show_effect_2(data_generator, x, grid_shape = (3, 3)):
+
+    g = datagen.flow(x, batch_size = 1)
+
+    (r, c) = grid_shape
+    img = []
+    for i in range(r * c):
+        img.append(g.next())
+
+    fig = plt.figure()
+    gs = gridspec.GridSpec(r, c)
+    gs.update(wspace = 0.1, hspace = 0.1)
+
+    for i in range(r * c):
+
+        plt.subplot(gs[i])
+        plt.imshow(img[i].reshape(IMG_W, IMG_H), cmap = 'gray', aspect = 'auto')
+        plt.axis("off")
+
+    plt.show()
+
+
 if __name__ == '__main__':
 
     x = img_list[0].reshape(1, IMG_H, IMG_W, 1)
 
-    def show_effect(data_generator, x):
-        g = datagen.flow(x, batch_size = 1)
-
-        (r, c) = (3, 3)
-        img = []
-        for i in range(r * c):
-            img.append(g.next())
-
-        fig, axes = plt.subplots(r, c)
-        k = 0
-        for i in range(c):
-            for j in range(r):
-                axes[i, j].matshow(img[k].reshape(IMG_W, IMG_H), cmap = 'gray')
-                axes[i, j].get_yaxis().set_visible(False)
-                axes[i, j].get_xaxis().set_visible(False)
-                k = k + 1
-
-        plt.show()
 
 
     # datagen = ImageDataGenerator(rotation_range = 90)
@@ -78,11 +104,12 @@ if __name__ == '__main__':
     # datagen = ImageDataGenerator(shear_range = 20) # 0.78 = pi/4
     # show_effect(datagen, x)
     datagen = ImageDataGenerator(zoom_range = 0.5)
+    # show_effect_2(datagen, x)
     show_effect(datagen, x)
-    datagen = ImageDataGenerator(horizontal_flip = True)
-    show_effect(datagen, x)
-    datagen = ImageDataGenerator(vertical_flip = True)
-    show_effect(datagen, x)
+    # datagen = ImageDataGenerator(horizontal_flip = True)
+    # show_effect(datagen, x)
+    # datagen = ImageDataGenerator(vertical_flip = True)
+    # show_effect(datagen, x)
 #
 #
 #
