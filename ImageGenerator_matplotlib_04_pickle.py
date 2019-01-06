@@ -12,7 +12,7 @@ nb_class_list = list(range(nb_class))
 (IMG_W, IMG_H, IMG_D) = (28, 28, 1)
 img_list = []
 
-PATH = '/Users/ichiroamitani/Documents/Software/Python/Siamese_network-master/image/'
+PATH = '/Users/ichiroamitani/Documents/Software/GitHub/Siamese_network/image'
 
 
 def load_MNIST_image_label(data_path, nb_class = 10):
